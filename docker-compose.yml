@@ -1,0 +1,50 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: botforge
+      POSTGRES_USER: botforge
+      POSTGRES_PASSWORD: botforge
+    ports:
+      - "5432:5432"
+    volumes:
+      - botforge_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U botforge"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql+asyncpg://botforge:botforge@db:5432/botforge
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_WEBHOOK_SECRET: ${TELEGRAM_WEBHOOK_SECRET:-change-me}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173,http://localhost:3000}
+    ports:
+      - "8000:8000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  web:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+
+  migrate:
+    image: postgres:17-alpine
+    environment:
+      PGPASSWORD: botforge
+    volumes:
+      - ./backend/migrations:/migrations:ro
+    command: ["psql", "-h", "db", "-U", "botforge", "-d", "botforge", "-f", "/migrations/001_initial.sql"]
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  botforge_data:
