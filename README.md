@@ -93,14 +93,10 @@ backend/app/          FastAPI routes, models, templates, flow engine
 backend/migrations/   idempotent PostgreSQL migrations
 backend/tests/        engine regression tests
 frontend/src/         React editor, simulator, and analytics UI
-docs/screenshots/     portfolio screenshots
+docs/screenshots/     product screenshots
 docker-compose.yml    local application stack
 ```
 
 ## Security scope
 
-BotForge is currently a single-operator portfolio application. Its management API has no account system, so deploy it only behind private network access or an authentication proxy. Before offering it as a public multi-user service, add workspace authorization, encrypt bot tokens at rest, rate-limit public endpoints, and move Telegram delivery to a retryable background queue.
-
-## License
-
-This repository is provided as a portfolio and educational project.
+BotForge is currently a self-hosted, single-operator application. Its management API has no account system, so deploy it only behind private network access or an authentication proxy. Before offering it as a public multi-user service, add workspace authorization, encrypt bot tokens at rest, rate-limit public endpoints, and move Telegram delivery to a retryable background queue.
