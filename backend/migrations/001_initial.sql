@@ -21,6 +21,7 @@ create table if not exists bot_users (
   first_seen_at timestamptz not null default now(),
   last_seen_at timestamptz not null default now(),
   current_node_id text,
+  state jsonb not null default '{}'::jsonb,
   unique (workflow_id, telegram_user_id)
 );
 create index if not exists idx_bot_users_workflow on bot_users (workflow_id);
@@ -38,3 +39,9 @@ create table if not exists messages (
 create index if not exists idx_messages_workflow_created on messages (workflow_id, created_at desc);
 create index if not exists idx_messages_telegram_user on messages (telegram_user_id);
 
+create table if not exists telegram_updates (
+  workflow_id bigint not null references workflows(id) on delete cascade,
+  update_id bigint not null,
+  received_at timestamptz not null default now(),
+  primary key (workflow_id, update_id)
+);

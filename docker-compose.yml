@@ -41,7 +41,7 @@ services:
       PGPASSWORD: botforge
     volumes:
       - ./backend/migrations:/migrations:ro
-    command: ["psql", "-h", "db", "-U", "botforge", "-d", "botforge", "-f", "/migrations/001_initial.sql"]
+    command: ["sh", "-c", "for file in /migrations/*.sql; do psql -v ON_ERROR_STOP=1 -h db -U botforge -d botforge -f $$file; done"]
     depends_on:
       db:
         condition: service_healthy

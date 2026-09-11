@@ -16,10 +16,12 @@ class FlowNode(BaseModel):
     text: str = Field(default="", max_length=1000)
     next_id: str | None = None
     choices: list[Choice] = Field(default_factory=list)
-    # condition block: branch by substring in user message
+    # condition block: branch by substring in user message or variable
     condition_value: str = Field(default="", max_length=200)
     true_next_id: str | None = None
     false_next_id: str | None = None
+    # optional variable name to store user input
+    variable_name: str | None = Field(default=None, max_length=80)
 
 
 class FlowDefinition(BaseModel):
@@ -38,7 +40,7 @@ class WorkflowRead(WorkflowCreate):
     is_published: bool
     created_at: datetime
     updated_at: datetime
-    telegram_bot_token: str | None = None
+    has_token: bool
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -56,6 +58,14 @@ class TemplateInfo(BaseModel):
 class SimulationRequest(BaseModel):
     message: str = Field(default="", max_length=1000)
     current_node_id: str | None = None
+    state: dict[str, Any] = Field(default_factory=dict)
+
+
+class StatelessSimulationRequest(BaseModel):
+    definition: FlowDefinition
+    message: str = Field(default="", max_length=1000)
+    current_node_id: str | None = None
+    state: dict[str, Any] = Field(default_factory=dict)
 
 
 class SimulationResponse(BaseModel):
@@ -63,3 +73,4 @@ class SimulationResponse(BaseModel):
     choices: list[str]
     current_node_id: str | None
     complete: bool
+    state: dict[str, Any] = Field(default_factory=dict)

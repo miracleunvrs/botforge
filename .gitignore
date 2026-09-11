@@ -7,4 +7,5 @@ frontend/dist/
 frontend/tsconfig.tsbuildinfo
 *.tsbuildinfo
 .DS_Store
-
+botforge-hunt/
+backend/uv.lock
