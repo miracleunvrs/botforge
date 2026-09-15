@@ -684,7 +684,7 @@ export function App() {
                 <div style={{ display: "grid", gap: 8, marginTop: 12 }}>
                   <strong style={{ fontSize: 13 }}>Кнопки выбора</strong>
                   {active.choices.map((c, i) => (
-                    <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 110px auto", gap: 6 }}>
+                    <div key={i} className="choice-row">
                       <input
                         placeholder="Текст кнопки"
                         value={c.label}
@@ -859,7 +859,7 @@ export function App() {
       {/* Workflows Modal */}
       {showWorkflowsModal && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(16,20,35,.45)", display: "grid", placeItems: "center", zIndex: 50 }} onClick={() => setShowWorkflowsModal(false)}>
-          <div onClick={(e) => e.stopPropagation()} style={{ width: 480, background: "#fff", borderRadius: 14, padding: 22, boxShadow: "0 18px 40px rgba(0,0,0,.18)", maxHeight: "80vh", overflowY: "auto" }}>
+          <div onClick={(e) => e.stopPropagation()} style={{ width: "min(480px, calc(100vw - 28px))", background: "#fff", borderRadius: 14, padding: 22, boxShadow: "0 18px 40px rgba(0,0,0,.18)", maxHeight: "80vh", overflowY: "auto" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
               <h3 style={{ margin: 0, fontFamily: "Manrope" }}>Сохраненные сценарии</h3>
               <button className="button primary" style={{ height: 32, fontSize: 12 }} onClick={createNewWorkflow}>
@@ -912,7 +912,7 @@ export function App() {
       {/* Telegram Token Modal */}
       {showTokenModal && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(16,20,35,.45)", display: "grid", placeItems: "center", zIndex: 50 }} onClick={() => setShowTokenModal(false)}>
-          <div onClick={(e) => e.stopPropagation()} style={{ width: 460, background: "#fff", borderRadius: 14, padding: 22, boxShadow: "0 18px 40px rgba(0,0,0,.18)" }}>
+          <div onClick={(e) => e.stopPropagation()} style={{ width: "min(460px, calc(100vw - 28px))", background: "#fff", borderRadius: 14, padding: 22, boxShadow: "0 18px 40px rgba(0,0,0,.18)" }}>
             <h3 style={{ margin: "0 0 6px", fontFamily: "Manrope" }}>Подключение Telegram</h3>
             <p className="muted" style={{ fontSize: 13, margin: 0 }}>Вставьте токен бота от @BotFather. Токен сохранится для текущего сценария.</p>
             <input
